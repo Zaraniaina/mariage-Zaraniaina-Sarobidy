@@ -26,7 +26,7 @@ const LeGrandJour: React.FC = () => {
               <img
                 alt="Alliances"
                 className="w-full h-full object-cover rounded-full"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuARGO1s8NT-eiiL063rl_KFf0cb7meL5DW_7WKHbLbrG05jhouoKBDqbN6C4Dv0YfhoxpxoSKPVGNvYFtHgkdA4VDFg28eU5EigZf2UaajvQCi-1or9DykCm7UBWz-k_W0kMxPE7K29pJDhs3vUjQhjiDdnPqnymcPlOpQFFTAtccWe5_ULku3Le7N0NQhTgi17zw2lwXF1K-rgNCFgyMNLnjmL9hlY1b1cndVA5sntOf4Euxp_FfyM_MuzFWrw78S7P8A"
+                  src="/images/invitations.png"
               />
             </div>
             <div className="flex-1 relative z-10 md:bg-transparent px-4 py-2">

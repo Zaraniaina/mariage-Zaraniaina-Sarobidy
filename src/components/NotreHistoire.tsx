@@ -28,7 +28,7 @@ const NotreHistoire: React.FC = () => {
               <img
                 alt="Couple Silhouette"
                 className="w-full h-full object-cover rounded-full shadow-lg"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuANRWYrpEvzuKoHO1-4QK93xPylhawc14Zsm0G5GY4HyJXvsXCaD4sQj0o3ARVdiIY4B7u36Buw3HxWUOZxKY2e0TrgNB15iyIFqzdmfsrF7PZTp1ZZGwtYgyQcjXNzBZg3n9Eupfdm9PQRvndWwOK4HfX2iJmpDwIPPfwRC86AtbGBv103VG5L8s57IVTW0ycR3IoJwKBNSun0KcaPxcb9dFNcsY50JRN6cyZNqzlGXMr8uFEn7J0iRYxNqG1toujOy5k"
+                  src="/images/couples.png"
               />
             </div>
           </div>
