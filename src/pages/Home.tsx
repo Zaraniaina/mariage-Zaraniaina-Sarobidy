@@ -12,7 +12,7 @@ import Footer from '../components/Footer'
 
 const Home: React.FC = () => {
   return (
-    <main>
+    <main className="pt-16 md:pt-20">
       <Hero />
       <NotreHistoire />
       <Countdown />
