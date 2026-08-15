@@ -31,7 +31,7 @@ const Programme: React.FC = () => {
         <ScrollReveal direction="up" delay={200}>
           <div className="heart-separator"><span className="heart-icon">♡</span></div>
         </ScrollReveal>
-        <div className="flex flex-col md:flex-row justify-between items-start mt-12 md:mt-16 relative">
+        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center md:items-start mt-12 md:mt-16 relative">
           <div className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-[1px] bg-wedding-gold opacity-50 z-0"></div>
 
           <ScrollReveal direction="up" delay={300}>

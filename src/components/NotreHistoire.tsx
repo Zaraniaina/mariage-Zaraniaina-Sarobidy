@@ -24,11 +24,11 @@ const NotreHistoire: React.FC = () => {
         </ScrollReveal>
         <ScrollReveal direction="right" delay={400}>
           <div className="md:w-1/2 flex justify-center relative">
-            <div className="circle-img-container w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-96 lg:h-96">
+            <div className="circle-img-container w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem]">
               <img
                 alt="Couple Silhouette"
                 className="w-full h-full object-cover rounded-full shadow-lg"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuANRWYrpEvzuKoHO1-4QK93xPylhawc14Zsm0G5GY4HyJXvsXCaD4sQj0o3ARVdiIY4B7u36Buw3HxWUOZxKY2e0TrgNB15iyIFqzdmfsrF7PZTp1ZZGwtYgyQcjXNzBZg3n9Eupfdm9PQRvndWwOK4HfX2iJmpDwIPPfwRC86AtbGBv103VG5L8s57IVTW0ycR3IoJwKBNSun0KcaPxcb9dFNcsY50JRN6cyZNqzlGXMr8uFEn7J0iRYxNqG1toujOy5k"
+                  src="/images/couples.png"
               />
             </div>
           </div>

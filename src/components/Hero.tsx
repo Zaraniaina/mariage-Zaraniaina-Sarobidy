@@ -2,15 +2,44 @@ import React from 'react'
 import ScrollReveal from '../components/ScrollReveal'
 
 const Hero: React.FC = () => {
+  const videoRef = React.useRef<HTMLVideoElement>(null)
+
+  React.useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const attemptPlay = () => {
+      video.play().catch(() => {
+        video.setAttribute('poster', '/images/nous.PNG')
+      })
+    }
+
+    video.addEventListener('loadeddata', attemptPlay, { once: true })
+    video.addEventListener('error', () => {
+      video.setAttribute('poster', '/images/invitations.png')
+      video.load()
+    })
+
+    return () => {
+      video.removeEventListener('loadeddata', attemptPlay)
+    }
+  }, [])
+
   return (
     <header id="accueil" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-wedding-dark">
       <div className="absolute inset-0 z-0">
-        <img
-          alt="Zaraniaina & Sarobidy"
-          className="w-full h-full object-cover animate-fade-in"
-          style={{ animation: 'fadeIn 1.5s ease-out' }}
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuARGO1s8NT-eiiL063rl_KFf0cb7meL5DW_7WKHbLbrG05jhouoKBDqbN6C4Dv0YfhoxpxoSKPVGNvYFtHgkdA4VDFg28eU5EigZf2UaajvQCi-1or9DykCm7UBWz-k_W0kMxPE7K29pJDhs3vUjQhjiDdnPqnymcPlOpQFFTAtccWe5_ULku3Le7N0NQhTgi17zw2lwXF1K-rgNCFgyMNLnjmL9hlY1b1cndVA5sntOf4Euxp_FfyM_MuzFWrw78S7P8A"
-        />
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster="/images/invitations.png"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/Mariage.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-black/40 to-transparent pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-wedding-bg to-transparent pointer-events-none"></div>

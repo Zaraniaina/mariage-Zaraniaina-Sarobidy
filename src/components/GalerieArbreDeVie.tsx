@@ -36,13 +36,6 @@ const TimelineBranch: React.FC<TimelineBranchProps> = ({ imageSrc, imageAlt, tit
 const GalerieArbreDeVie: React.FC = () => {
   return (
     <section id="galerie" className="py-16 md:py-24 lg:py-32 relative bg-white/60 overflow-hidden">
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <img
-          alt="Floral decor"
-          className="w-full h-full object-cover"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP3KwHDRsgQJ3xX9zTeE6jK80GlYlJf-KgpBbF6-vmg_Dhkgau-EpLzcZLnnk8C9fjWEQvShl7jNbGI5wrES9Ur8kVpFZVhTq8GbobxsgcxIT9iAfaLngT7kRoxj36WpfSx_gyWH6rY9mv7adhwQE6Kd7nNVlFMckeW5rjPGiOltqCcWuOnPXTecgS1pa7g0xTXsqI7VdMYXxXzq2322lM8vt8v-kZ7e748VYppgXVqH2kiHfj52_ODbLLgYDsglgwcLs"
-        />
-      </div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-4xl">
         <ScrollReveal direction="up" delay={100}>
           <h2 className="section-title">Notre Parcours</h2>
@@ -60,7 +53,7 @@ const GalerieArbreDeVie: React.FC = () => {
 
           <ScrollReveal direction="left" delay={400}>
             <TimelineBranch
-              imageSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuBY09GtSz3VCRpSc-1UDFrOJS6BIwa46JhmBdC4jGIlpjNdl-c3WP6E2S-uTEwEpQykdpE2fe4F85Mv_wns9tHwZgNRHWY6iPrxEDPXS92fkh2ShZk6nAPbIwj4RbT-7JlQTz8s5gMz8BazbxsAB9cI-2a0lvyml5W2sAMnbXwCU9y3NF0KXh257xmORfqyTGWx8jyyIul0LH-Cf9TuQbFc8DZnE-eH2EnNbNkZrPgvBkJDImunkFVZWgU0ZknoUTB67gM"
+              imageSrc="/images/bae.PNG"
               imageAlt="Galerie 1"
               title="Notre Amour"
               subtitle="Une belle promesse"
@@ -69,7 +62,7 @@ const GalerieArbreDeVie: React.FC = () => {
 
           <ScrollReveal direction="right" delay={500}>
             <TimelineBranch
-              imageSrc="https://lh3.googleusercontent.com/aida-public/AB6AXuArOpCcI23jAbuOPVl85DPmHaz_VfHqEmHNgbIEJ79LYMgKULHSvRnaRoQd2YlO-Y9INZQRIa26rCRvca_x5LCu7RkH95TAQySgJuCB7WdpvI3xfbRmI-9fsgLIhaU3LpcFViZsdpViQDiX_B07yHelw1OokUtz5CUWSi1H9Pa602dVzmY81JgPvwAXDWFn01BS_S2wDT8lKYGDwe-rSLqiG6m3k4YJjyIP8RoNJenuhYvw_qGTq-V8dq-5oBKk5IkbnDg"
+              imageSrc="/images/nous.PNG"
               imageAlt="Galerie 2"
               title="Complicité"
               subtitle="Des moments précieux"
@@ -92,7 +85,7 @@ const GalerieArbreDeVie: React.FC = () => {
                   <img
                     alt="Famille"
                     className="w-full h-full object-cover rounded-full"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXHAWdWWP03a8pAx0UNQX_iIUii6_TYnnD8ITMfERV0lhnTKn8LRdlm0aKnUS0bZfcsxTaROLvFHOdAnYoOZIV4uFBVdpJZoqqy8MCVDock5xq52iwNgTvRzMOoKEXNkxdKrUbGKPtcDOsRMz3YbBQFWO9VZfTd9Yc5jaRGh1Ct6s4OhiP55-V_23GbQClmTnZBpd5U8hGOCvvbdGJp6EhsTfnmvY7Nf1tUVQf6urkve5FfMFplwLSZWZtBoV-4tQqcwQ"
+                    src="/images/famiiles.jpg"
                   />
                 </div>
               </div>
