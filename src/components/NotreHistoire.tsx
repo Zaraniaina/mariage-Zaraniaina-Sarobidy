@@ -24,7 +24,7 @@ const NotreHistoire: React.FC = () => {
         </ScrollReveal>
         <ScrollReveal direction="right" delay={400}>
           <div className="md:w-1/2 flex justify-center relative">
-            <div className="circle-img-container w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-96 lg:h-96">
+            <div className="circle-img-container w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem]">
               <img
                 alt="Couple Silhouette"
                 className="w-full h-full object-cover rounded-full shadow-lg"

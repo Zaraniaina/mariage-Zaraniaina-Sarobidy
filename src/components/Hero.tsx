@@ -2,15 +2,40 @@ import React from 'react'
 import ScrollReveal from '../components/ScrollReveal'
 
 const Hero: React.FC = () => {
+  const videoRef = React.useRef<HTMLVideoElement>(null)
+
+  React.useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const attemptPlay = () => {
+      video.play().catch(() => {
+        video.setAttribute('poster', '/images/nous.PNG')
+      })
+    }
+
+    video.addEventListener('loadeddata', attemptPlay, { once: true })
+    video.addEventListener('error', () => {
+      video.setAttribute('poster', '/images/invitations.png')
+      video.load()
+    })
+
+    return () => {
+      video.removeEventListener('loadeddata', attemptPlay)
+    }
+  }, [])
+
   return (
     <header id="accueil" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-wedding-dark">
       <div className="absolute inset-0 z-0">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
-          poster="/images/nous.PNG"
+          preload="auto"
+          poster="/images/invitations.png"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/videos/Mariage.mp4" type="video/mp4" />
