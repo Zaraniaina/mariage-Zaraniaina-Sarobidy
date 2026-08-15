@@ -1,0 +1,30 @@
+import React from 'react'
+import Hero from '../components/Hero'
+import NotreHistoire from '../components/NotreHistoire'
+import Countdown from '../components/Countdown'
+import LeGrandJour from '../components/LeGrandJour'
+import Programme from '../components/Programme'
+import Lieu from '../components/Lieu'
+import GalerieArbreDeVie from '../components/GalerieArbreDeVie'
+import GalerieHorizontale from '../components/GalerieHorizontale'
+import RSVP from '../components/RSVP'
+import Footer from '../components/Footer'
+
+const Home: React.FC = () => {
+  return (
+    <main>
+      <Hero />
+      <NotreHistoire />
+      <Countdown />
+      <LeGrandJour />
+      <Programme />
+      <Lieu />
+      <GalerieArbreDeVie />
+      <GalerieHorizontale />
+      <RSVP />
+      <Footer />
+    </main>
+  )
+}
+
+export default Home
