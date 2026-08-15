@@ -3,35 +3,125 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-wedding-bg text-wedding-dark overflow-x-hidden font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
 @layer components {
   .section-title {
-    @apply font-serif uppercase tracking-widest text-center text-2xl md:text-3xl mb-2;
+    @apply font-serif uppercase tracking-widest text-center text-2xl md:text-3xl lg:text-4xl mb-3 md:mb-4;
   }
 
   .heart-separator {
-    @apply flex items-center justify-center gap-4 mb-8;
+    @apply flex items-center justify-center gap-3 md:gap-4 mb-6 md:mb-8;
   }
 
   .heart-separator::before,
   .heart-separator::after {
     content: '';
-    @apply h-px w-12 bg-wedding-gold;
+    @apply h-px w-8 md:w-12 bg-wedding-gold;
   }
 
   .btn-outline {
-    @apply border border-wedding-gold text-wedding-gold px-8 py-3 uppercase text-xs tracking-widest transition-all duration-300 bg-transparent hover:bg-wedding-gold hover:text-white;
+    @apply border border-wedding-gold text-wedding-gold px-6 py-3 md:px-8 md:py-3 uppercase text-xs tracking-widest transition-all duration-300 bg-transparent hover:bg-wedding-gold hover:text-white;
   }
 
   .btn-filled {
-    @apply bg-wedding-btn text-white px-8 py-3 uppercase text-xs tracking-widest transition-all duration-300 border-none hover:opacity-90;
+    @apply bg-wedding-btn text-white px-6 py-3 md:px-8 md:py-3 uppercase text-xs tracking-widest transition-all duration-300 border-none hover:opacity-90;
   }
 
   .gold-border-box {
-    @apply border border-wedding-gold p-6 md:p-8 rounded bg-white/30;
+    @apply border border-wedding-gold p-4 md:p-6 lg:p-8 rounded bg-white/30;
+  }
+
+  .circle-img-container {
+    @apply relative inline-block;
+  }
+
+  .circle-img-container::before {
+    content: '';
+    @apply absolute -top-2 -left-2 -right-2 -bottom-2 border-2 border-wedding-gold rounded-full -z-10;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-gold {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(197, 160, 89, 0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.5s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
   }
 }
