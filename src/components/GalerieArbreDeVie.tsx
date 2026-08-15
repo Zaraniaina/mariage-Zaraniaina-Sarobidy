@@ -62,7 +62,7 @@ const GalerieArbreDeVie: React.FC = () => {
 
           <ScrollReveal direction="right" delay={500}>
             <TimelineBranch
-              imageSrc="/images/bags.png"
+              imageSrc="/images/nous.PNG"
               imageAlt="Galerie 2"
               title="Complicité"
               subtitle="Des moments précieux"

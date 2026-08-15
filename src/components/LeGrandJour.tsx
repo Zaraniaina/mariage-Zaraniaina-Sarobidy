@@ -26,7 +26,7 @@ const LeGrandJour: React.FC = () => {
               <img
                 alt="Alliances"
                 className="w-full h-full object-cover rounded-full"
-                  src="/images/invitations.png"
+                  src="/images/bags.png"
               />
             </div>
             <div className="flex-1 relative z-10 md:bg-transparent px-4 py-2">

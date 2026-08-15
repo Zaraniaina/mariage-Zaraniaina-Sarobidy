@@ -5,12 +5,16 @@ const Hero: React.FC = () => {
   return (
     <header id="accueil" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-wedding-dark">
       <div className="absolute inset-0 z-0">
-        <img
-          alt="Zaraniaina & Sarobidy"
-          className="w-full h-full object-cover animate-fade-in"
-          style={{ animation: 'fadeIn 1.5s ease-out' }}
-          src="/images/nous.PNG"
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster="/images/nous.PNG"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/Mariage.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-black/40 to-transparent pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-wedding-bg to-transparent pointer-events-none"></div>
