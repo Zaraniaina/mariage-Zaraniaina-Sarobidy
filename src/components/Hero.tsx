@@ -10,18 +10,20 @@ const Hero: React.FC = () => {
 
     const attemptPlay = () => {
       video.play().catch(() => {
-        video.setAttribute('poster', '/images/nous.PNG')
+        video.setAttribute('poster', '/images/invitations.png')
       })
     }
 
     video.addEventListener('loadeddata', attemptPlay, { once: true })
     video.addEventListener('error', () => {
       video.setAttribute('poster', '/images/invitations.png')
-      video.load()
     })
+
+    attemptPlay()
 
     return () => {
       video.removeEventListener('loadeddata', attemptPlay)
+      video.removeEventListener('error', () => {})
     }
   }, [])
 

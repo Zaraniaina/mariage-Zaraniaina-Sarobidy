@@ -21,9 +21,8 @@ const RSVP: React.FC = () => {
         </ScrollReveal>
         <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-12 w-full max-w-4xl mb-6 md:mb-8">
           {[
+            { number: '034 78 402 02' },
             { number: '034 xx xxx xx' },
-            { number: '033 xx xxx xx' },
-            { number: '032 xx xxx xx' },
           ].map((item, index) => (
             <ScrollReveal key={item.number} direction="up" delay={400 + index * 100}>
               <div className="flex flex-col items-center p-4 md:p-6 bg-white/50 backdrop-blur-md rounded-lg shadow-md border border-wedding-gold/20 flex-1 hover-lift">

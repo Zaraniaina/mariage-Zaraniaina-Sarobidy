@@ -6,7 +6,7 @@ import BackgroundMusic from './components/BackgroundMusic'
 
 const App: React.FC = () => {
   return (
-    <Router>
+    <Router basename='/mariage-Zaraniaina-Sarobidy'>
       <div className="min-h-screen">
         <Navbar />
         <Routes>
