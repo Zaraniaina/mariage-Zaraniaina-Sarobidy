@@ -20,26 +20,13 @@ export const useScrollReveal = (threshold = 0.15) => {
 
     observer.observe(element)
 
-    const rect = element.getBoundingClientRect()
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight
-    const isInViewport = rect.top < windowHeight && rect.bottom > 0
-
-    if (isInViewport) {
+    const timeoutId = setTimeout(() => {
       setIsVisible(true)
       observer.disconnect()
-    } else {
-      const timeoutId = setTimeout(() => {
-        setIsVisible(true)
-        observer.disconnect()
-      }, 800)
-
-      return () => {
-        clearTimeout(timeoutId)
-        observer.disconnect()
-      }
-    }
+    }, 1000)
 
     return () => {
+      clearTimeout(timeoutId)
       observer.disconnect()
     }
   }, [threshold])

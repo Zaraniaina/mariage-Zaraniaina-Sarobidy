@@ -1,5 +1,6 @@
 import React from 'react'
 import ScrollReveal from '../components/ScrollReveal'
+import { basePath } from '../utils/basePath'
 
 const NotreHistoire: React.FC = () => {
   return (
@@ -28,7 +29,7 @@ const NotreHistoire: React.FC = () => {
               <img
                 alt="Couple Silhouette"
                 className="w-full h-full object-cover rounded-full shadow-lg"
-                  src="/images/couples.png"
+                  src={basePath('/images/couples.png')}
               />
             </div>
           </div>

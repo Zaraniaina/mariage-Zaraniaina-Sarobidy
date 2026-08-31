@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
+import { basePath } from '../utils/basePath'
 
 const BackgroundMusic: React.FC = () => {
   useEffect(() => {
-    const audio = new Audio('/audio/Ed-Sheeran-Perfect.mp3')
+    const audio = new Audio(basePath('/audio/Ed-Sheeran-Perfect.mp3'))
     audio.loop = true
     audio.volume = 0.3
     audio.preload = 'auto'

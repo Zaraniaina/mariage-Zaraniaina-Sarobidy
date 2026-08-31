@@ -1,5 +1,6 @@
 import React from 'react'
 import ScrollReveal from '../components/ScrollReveal'
+import { basePath } from '../utils/basePath'
 
 interface TimelineBranchProps {
   imageSrc: string
@@ -53,7 +54,7 @@ const GalerieArbreDeVie: React.FC = () => {
 
           <ScrollReveal direction="left" delay={400}>
             <TimelineBranch
-              imageSrc="/images/bae.PNG"
+              imageSrc={basePath('/images/bae.PNG')}
               imageAlt="Galerie 1"
               title="Notre Amour"
               subtitle="Une belle promesse"
@@ -62,7 +63,7 @@ const GalerieArbreDeVie: React.FC = () => {
 
           <ScrollReveal direction="right" delay={500}>
             <TimelineBranch
-              imageSrc="/images/nous.PNG"
+              imageSrc={basePath('/images/nous.PNG')}
               imageAlt="Galerie 2"
               title="Complicité"
               subtitle="Des moments précieux"
@@ -80,18 +81,14 @@ const GalerieArbreDeVie: React.FC = () => {
                 <div className="absolute right-1/2 top-1/2 w-full h-0.5 bg-wedding-gold opacity-50"></div>
                 <div className="w-4 h-4 bg-wedding-gold border-4 border-white rounded-full z-10 shadow-sm"></div>
               </div>
-              <div className="w-full md:w-5/12 md:pl-8 flex justify-center md:justify-start">
+              <div className="w-full md:w-5/11 md:pl-8 flex justify-center md:justify-start">
                 <div className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 rounded-full border-4 border-wedding-gold p-1 bg-white shadow-2xl overflow-hidden transform hover:scale-105 transition-all duration-500 relative z-10">
                   <img
                     alt="Famille"
                     className="w-full h-full object-cover rounded-full"
-                    src="/images/famiiles.jpg"
+                    src={basePath('/images/famiiles.jpg')}
                   />
                 </div>
-              </div>
-              <div className="md:hidden mt-4 text-center">
-                <h3 className="font-serif text-xl text-wedding-dark mb-1">Nos Racines</h3>
-                <p className="text-sm text-gray-500 uppercase tracking-widest">La fondation familiale</p>
               </div>
             </div>
           </ScrollReveal>
