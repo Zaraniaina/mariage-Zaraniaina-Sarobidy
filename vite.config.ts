@@ -3,5 +3,5 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react()],
-  base:'/mariage-Zaraniaina-Sarobidy'
+  base: '/mariage-Zaraniaina-Sarobidy/',
 })

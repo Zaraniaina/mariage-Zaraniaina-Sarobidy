@@ -125,3 +125,61 @@
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
   }
 }
+
+/* ===== Preloader ===== */
+@keyframes preloader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fcf9f1;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+}
+
+.preloader--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-ring {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  border-top-color: #c5a059;
+  animation: preloader-spin 1.1s linear infinite;
+}
+
+/* ===== Égaliseur (bouton musique) ===== */
+@keyframes eq-bounce {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.eq-bar {
+  transform-origin: center;
+  animation: eq-bounce 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader-ring,
+  .eq-bar {
+    animation: none;
+  }
+}
+
