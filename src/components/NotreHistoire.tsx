@@ -23,7 +23,7 @@ const NotreHistoire: React.FC = () => {
             </div>
           </div>
         </ScrollReveal>
-        <ScrollReveal direction="right" delay={400}>
+        <ScrollReveal direction="right" effect="zoom" delay={400}>
           <div className="md:w-1/2 flex justify-center relative">
             <div className="circle-img-container w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem]">
               <img

@@ -48,7 +48,7 @@ const Hero: React.FC = () => {
         <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-wedding-bg to-transparent pointer-events-none"></div>
       </div>
 
-      <ScrollReveal direction="fade" delay={300}>
+      <ScrollReveal direction="fade" effect="blur" delay={300}>
         <div className="relative z-10 text-center text-white px-4">
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl mb-4 text-wedding-gold drop-shadow-lg">
             Zaraniaina & Sarobidy

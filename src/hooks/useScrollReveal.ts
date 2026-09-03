@@ -1,12 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
 
-export const useScrollReveal = (threshold = 0.15) => {
-  const ref = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+export const useScrollReveal = <T extends HTMLElement = HTMLDivElement>(threshold = 0.15) => {
+  const ref = useRef<T>(null)
+  const [isVisible, setIsVisible] = useState(() => prefersReducedMotion())
 
   useEffect(() => {
     const element = ref.current
     if (!element) return
+
+    if (prefersReducedMotion()) {
+      setIsVisible(true)
+      return
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -15,18 +24,12 @@ export const useScrollReveal = (threshold = 0.15) => {
           observer.unobserve(element)
         }
       },
-      { threshold }
+      { threshold, rootMargin: '0px 0px -10% 0px' }
     )
 
     observer.observe(element)
 
-    const timeoutId = setTimeout(() => {
-      setIsVisible(true)
-      observer.disconnect()
-    }, 1000)
-
     return () => {
-      clearTimeout(timeoutId)
       observer.disconnect()
     }
   }, [threshold])

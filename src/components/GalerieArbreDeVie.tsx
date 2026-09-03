@@ -52,7 +52,7 @@ const GalerieArbreDeVie: React.FC = () => {
         <div className="relative mt-8 md:mt-12 pb-20 md:pb-24">
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1.5 h-full bg-gradient-to-b from-wedding-gold/30 via-wedding-gold to-wedding-gold/80 rounded-full"></div>
 
-          <ScrollReveal direction="left" delay={400}>
+          <ScrollReveal direction="left" effect="zoom-blur" delay={400}>
             <TimelineBranch
               imageSrc={basePath('/images/bae.PNG')}
               imageAlt="Galerie 1"
@@ -61,7 +61,7 @@ const GalerieArbreDeVie: React.FC = () => {
             />
           </ScrollReveal>
 
-          <ScrollReveal direction="right" delay={500}>
+          <ScrollReveal direction="right" effect="zoom-blur" delay={500}>
             <TimelineBranch
               imageSrc={basePath('/images/nous.PNG')}
               imageAlt="Galerie 2"
@@ -71,7 +71,7 @@ const GalerieArbreDeVie: React.FC = () => {
             />
           </ScrollReveal>
 
-          <ScrollReveal direction="up" delay={600}>
+          <ScrollReveal direction="up" effect="zoom-blur" delay={600}>
             <div className="flex flex-col md:flex-row items-center justify-between w-full relative">
               <div className="hidden md:block md:w-5/12 text-right md:pr-8">
                 <h3 className="font-serif text-xl md:text-2xl text-wedding-dark mb-2">Nos Racines</h3>
