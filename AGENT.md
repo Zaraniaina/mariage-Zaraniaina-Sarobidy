@@ -83,6 +83,15 @@ Les actions suivantes nécessitent une confirmation explicite de l'utilisateur a
 - Si le projet n'a pas de tests, ne pas en imposer une nouvelle infrastructure sans demande explicite — signale simplement l'absence de couverture.
 - Avant de conclure qu'une tâche est terminée, exécute les tests existants pertinents et rapporte le résultat réel (pas supposé).
 
+### 5.3 Formatage du code — emojis et caractères spéciaux
+- **Aucun emoji** dans le code, les commentaires, les messages de commit, les logs, les chaînes de caractères ou les noms de fichiers/variables/fonctions. Cette règle est stricte et sans exception.
+- **Aucun caractère spécial non nécessaire** dans le code (symboles décoratifs, puces stylisées, flèches Unicode, guillemets typographiques, etc.). Reste sur l'ASCII standard par défaut.
+- Un caractère spécial n'est autorisé que s'il est **strictement nécessaire au fonctionnement ou à la correction** du code, par exemple :
+  - un caractère requis par une norme, un format de fichier, une API ou un protocole (ex : accents dans une chaîne de données métier, symboles monétaires exigés par la spécification, séparateurs imposés par un format d'échange) ;
+  - un caractère faisant partie intégrante d'un identifiant, d'une donnée ou d'un contenu fourni par l'utilisateur ou le projet existant.
+- En cas de doute sur la nécessité d'un caractère spécial, privilégie la version ASCII simple équivalente.
+- Cette règle s'applique à tout le code produit, quel que soit le langage, ainsi qu'aux fichiers de configuration générés.
+
 ---
 
 ## 6. Anti-hallucination (règle stricte)
@@ -120,6 +129,7 @@ En clair : il vaut toujours mieux un changement légèrement plus large mais cor
 - Sois concis et factuel : va à l'essentiel, évite les formulations creuses (« Je vais maintenant... », « N'hésitez pas à... »).
 - Si la demande est ambiguë sur un point bloquant, pose une question ciblée unique plutôt que de deviner sur un aspect critique. Pour tout le reste, fais une hypothèse raisonnable, indique-la brièvement, et avance.
 - N'ajoute jamais de commentaires superflus dans le code généré (pas de blabla, uniquement des commentaires utiles à la compréhension).
+- N'utilise jamais d'emoji dans les réponses, les rapports ou les messages destinés à l'utilisateur, sauf demande explicite de sa part.
 
 ### 9.1 Rapport de fin de tâche (format obligatoire)
 À la fin de chaque tâche, structure ton compte-rendu ainsi :
@@ -149,6 +159,9 @@ Non traité  : [ce qui reste hors périmètre ou en suspens]
 - Ne jamais introduire de changement de comportement silencieux (breaking change) sans le signaler explicitement.
 - Ne jamais répondre en anglais, même partiellement, sauf pour du code ou des termes techniques standards.
 - Ne jamais demander la permission d'utiliser un skill ou un outil interne disponible : l'utiliser directement.
+- Ne jamais utiliser d'emoji dans le code ou les réponses.
+- Ne jamais utiliser de caractères spéciaux non nécessaires dans le code (voir section 5.3).
+- Ne jamais créer ou modifier un README ou un fichier de documentation du projet sans confirmation explicite de l'utilisateur (voir section 14.2).
 
 ---
 
@@ -216,6 +229,7 @@ L'agent doit constamment chercher à réduire sa consommation de tokens (entrée
 - Commentaires de code strictement utiles, jamais décoratifs ou redondants avec un nom de fonction déjà explicite.
 - Le rapport de fin de tâche (section 9.1) reste bref : une ligne par champ, pas de paragraphe.
 - Pas d'explication pédagogique non demandée sur des concepts standards déjà connus dans le contexte du projet.
+- Pas d'emoji ni de caractère spécial décoratif dans les réponses (voir section 5.3) : ils consomment des tokens sans apporter d'information utile.
 
 ### 13.2 En lecture / contexte
 - Ne lis que les fichiers réellement nécessaires à la tâche, pas le repo entier « pour être sûr ».
@@ -228,6 +242,58 @@ En cas de tension entre concision et clarté nécessaire à la compréhension ou
 
 ---
 
-## 14. Résumé en une phrase
+## 14. Documentation du projet (README et état du projet)
 
-> Comprendre en profondeur, agir avec le minimum de changement nécessaire, vérifier avant d'affirmer, utiliser les bons outils sans qu'on te le demande, ne jamais inventer, économiser les tokens sans sacrifier la clarté, et rendre compte honnêtement selon un format fixe — toujours en français.
+L'agent est responsable de la documentation Markdown du projet, mais ne l'édite jamais sans autorisation explicite (voir 14.2).
+
+### 14.1 Structure attendue
+
+- **Un README par backend** : à la racine de chaque sous-projet backend (si le repo est multi-stack, un README par backend distinct).
+- **Un README par frontend** : à la racine de chaque sous-projet frontend.
+- **Un README unifié** : à la racine du repo, vue d'ensemble du projet, liens vers chaque README backend/frontend, architecture globale.
+
+Contenu minimal attendu dans chaque README (backend, frontend, unifié) :
+- Présentation du projet/module : objectif, périmètre fonctionnel.
+- Stack technique détectée : langage, framework, dépendances principales, gestionnaire de paquets.
+- Installation et lancement : commandes dev, tests, build, variables d'environnement nécessaires (sans jamais y mettre de vrais secrets).
+- **État actuel du projet** : fonctionnalités livrées, en cours, prévues.
+- **Problèmes à venir / points de vigilance** : dette technique connue, limitations, risques identifiés, TODO non traités.
+- Date de dernière mise à jour.
+
+Le README unifié reste synthétique : il ne duplique pas le détail des README backend/frontend, il renvoie vers eux.
+
+### 14.2 Règle de confirmation obligatoire
+
+- L'agent **ne crée ni ne modifie jamais** un fichier de documentation (README backend, frontend, unifié, ou tout fichier Markdown de suivi d'état) de sa propre initiative.
+- À la fin d'une tâche significative (nouvelle fonctionnalité, changement de stack, correction impactant l'état ou l'architecture du projet), l'agent **demande explicitement** à l'utilisateur s'il souhaite une mise à jour de la documentation.
+- L'agent n'agit sur la documentation qu'après une confirmation claire de l'utilisateur (« oui », « ok », ou équivalent). Sans confirmation, il n'effectue aucune modification et poursuit normalement.
+- Si l'utilisateur confirme :
+  - **Fichier déjà existant** : mise à jour uniquement (diff minimal, cf. section 2), pas de réécriture complète sauf nécessité réelle.
+  - **Fichier absent** : création du fichier en respectant la structure définie en 14.1.
+- L'agent ne crée jamais de documentation concurrente ou redondante : il réutilise et fait évoluer les fichiers existants plutôt que d'en multiplier de nouveaux.
+- Les règles de formatage (section 5.3 : pas d'emoji, pas de caractère spécial non nécessaire) s'appliquent aussi à ces fichiers Markdown.
+
+### 14.3 Fichier PROJET.md (documentation globale de référence)
+
+En complément des README (14.1), l'agent maintient un fichier **`PROJET.md`** à la racine du repo. C'est la documentation de fond du projet, distincte du README unifié (qui reste un point d'entrée rapide : installation, lancement, liens).
+
+Contenu attendu de `PROJET.md` :
+- **Structure du projet** : arborescence des dossiers/modules principaux et rôle de chacun.
+- **Fonctionnalités** : liste des fonctionnalités existantes, description courte de chacune, regroupées par module/domaine si pertinent.
+- **Rôles** : rôles utilisateurs/permissions gérés par l'application (ex: admin, utilisateur, invité) et, si pertinent, rôle technique de chaque module/service dans l'architecture.
+- **Architecture générale** : comment le backend, le frontend et les éventuels services externes communiquent entre eux.
+- **État actuel du projet** : ce qui est livré, en cours, prévu.
+- **Problèmes à venir / points de vigilance** : dette technique, limitations connues, risques identifiés.
+- **Décisions techniques importantes** et leur justification, si pertinent (ex: choix d'une librairie, d'une architecture).
+- Date de dernière mise à jour.
+
+`PROJET.md` suit les mêmes règles que les README :
+- Créé ou mis à jour **uniquement après confirmation explicite de l'utilisateur** (voir 14.2) — jamais de sa propre initiative.
+- Mise à jour (diff minimal) si le fichier existe déjà, création s'il n'existe pas.
+- Aucun emoji, aucun caractère spécial non nécessaire (section 5.3).
+
+---
+
+## 15. Résumé en une phrase
+
+> Comprendre en profondeur, agir avec le minimum de changement nécessaire, vérifier avant d'affirmer, utiliser les bons outils sans qu'on te le demande, ne jamais inventer, ne jamais utiliser d'emoji ou de caractère spécial non nécessaire dans le code, maintenir la documentation (README backend/frontend/unifié, PROJET.md avec structure/fonctionnalités/rôles, état et problèmes du projet) uniquement après confirmation de l'utilisateur, économiser les tokens sans sacrifier la clarté, et rendre compte honnêtement selon un format fixe — toujours en français.

@@ -5,6 +5,8 @@ const TARGET_VOLUME = 0.35
 const FADE_STEP = 0.01
 const FADE_INTERVAL_MS = 50
 
+const audioUrl = basePath('/audio/Ed-Sheeran-Perfect.mp3')
+
 const MusicToggle: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const fadeIntervalRef = useRef<number | null>(null)
@@ -46,7 +48,7 @@ const MusicToggle: React.FC = () => {
   }, [fadeIn])
 
   useEffect(() => {
-    const audio = new Audio(basePath('/audio/Ed-Sheeran-Perfect.mp3'))
+    const audio = new Audio(audioUrl)
     audio.loop = true
     audio.preload = 'auto'
     audio.volume = 0
@@ -57,10 +59,21 @@ const MusicToggle: React.FC = () => {
     audio.addEventListener('play', onPlay)
     audio.addEventListener('pause', onPause)
 
-    // Démarrage à la première intention de scroll ou interaction de l'utilisateur.
-    // Sur mobile, touchend (fin du geste de scroll) compte comme une interaction valide.
+// Démarrage automatique dès la fin du chargement complet de la page.
+    const onPageLoaded = () => {
+      void attemptPlay()
+    }
+    if (document.readyState === 'complete') {
+      onPageLoaded()
+    } else {
+      window.addEventListener('load', onPageLoaded, { once: true })
+    }
+
+    // Repli : première intention de scroll ou interaction de l'utilisateur.
+    // Sur mobile, touchstart/touchend comptent comme une interaction valide.
     // Sur desktop, wheel ne compte pas pour l'autoplay : le repli pointerdown/keydown (clic) prend le relais.
     const startEvents: (keyof WindowEventMap)[] = [
+      'touchstart',
       'scroll',
       'wheel',
       'touchmove',
@@ -80,6 +93,7 @@ const MusicToggle: React.FC = () => {
     startEvents.forEach(event => window.addEventListener(event, handleStart, { passive: true }))
 
     return () => {
+      window.removeEventListener('load', onPageLoaded)
       startEvents.forEach(event => window.removeEventListener(event, handleStart))
       audio.removeEventListener('play', onPlay)
       audio.removeEventListener('pause', onPause)

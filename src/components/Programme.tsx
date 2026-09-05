@@ -43,7 +43,7 @@ const Programme: React.FC = () => {
               }
               title="À définir"
               subtitle="Mariage Civil"
-              description="Cérémonie civile"
+              description="Commune Urbain de Toamasina"
             />
           </ScrollReveal>
 
@@ -56,7 +56,7 @@ const Programme: React.FC = () => {
               }
               title="À définir"
               subtitle="Mariage à l'Église"
-              description="Cérémonie religieuse"
+              description="FJKM BETELA Tanambao V"
             />
           </ScrollReveal>
 
@@ -69,7 +69,7 @@ const Programme: React.FC = () => {
               }
               title="À définir"
               subtitle="Dîner"
-              description="Dîner de fête"
+              description="Tsik'Hotel Tanambao I"
             />
           </ScrollReveal>
 
@@ -82,7 +82,7 @@ const Programme: React.FC = () => {
               }
               title="À définir"
               subtitle="Bal"
-              description="Soirée dansante"
+              description="Tsik'Hotel Tanambao I"
             />
           </ScrollReveal>
         </div>

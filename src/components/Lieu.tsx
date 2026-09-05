@@ -28,7 +28,7 @@ const Lieu: React.FC = () => {
                 src="https://www.google.com/maps?q=Tsik'hotel+Lot+0170+Parcelle+31/21+Tanambao+1+Boulevard+de+la+Fidelite+Toamasina+Madagascar&output=embed"
                 style={{ border: 0, filter: 'sepia(20%) contrast(90%) brightness(95%)' }}
                 width="100%"
-                title="Carte Tsik'hotel Tanambao 1 Toamasina"
+                title="Carte Tsik'hotel Tanambao I Toamasina"
               ></iframe>
             </div>
           </div>
