@@ -41,7 +41,7 @@ const Programme: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 21h16M5 21V9m14 12V9M9 21V9m6 12V9M3 9l9-6 9 6H3z" />
                 </svg>
               }
-              title="À définir"
+              title="Heure à définir"
               subtitle="Mariage Civil"
               description="Commune Urbain de Toamasina"
             />
@@ -54,7 +54,7 @@ const Programme: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v4m0 0H9m3 0h3m-3 4l-7 6v6h14v-6l-7-6zm0 0v12M9 21v-4a3 3 0 016 0v4" />
                 </svg>
               }
-              title="À définir"
+              title="Heure à définir"
               subtitle="Mariage à l'Église"
               description="FJKM BETELA Tanambao V"
             />
@@ -67,7 +67,7 @@ const Programme: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 15c0-4.418-4.03-8-9-8s-9 3.582-9 8h18zM3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4M12 3v4" />
                 </svg>
               }
-              title="À définir"
+              title="Heure à définir"
               subtitle="Dîner"
               description="Tsik'Hotel Tanambao I"
             />
@@ -80,7 +80,7 @@ const Programme: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3 2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3 2 3 .895 3 2zM9 10l12-3" />
                 </svg>
               }
-              title="À définir"
+              title="Heure à définir"
               subtitle="Bal"
               description="Tsik'Hotel Tanambao I"
             />

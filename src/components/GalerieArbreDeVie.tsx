@@ -13,7 +13,7 @@ interface TimelineBranchProps {
 const TimelineBranch: React.FC<TimelineBranchProps> = ({ imageSrc, imageAlt, title, subtitle, reverse }) => {
   return (
     <div className={`flex flex-col md:flex-row${reverse ? '-reverse' : ''} items-center justify-between mb-20 w-full relative`}>
-      <div className="hidden md:block md:w-5/12 text-right md:pr-8">
+      <div className={`hidden md:block md:w-5/12 ${reverse ? 'text-left md:pl-8' : 'text-right md:pr-8'}`}>
         <h3 className="font-serif text-xl md:text-2xl text-wedding-dark mb-2">{title}</h3>
         <p className="text-sm text-gray-500 uppercase tracking-widest">{subtitle}</p>
       </div>
@@ -21,7 +21,7 @@ const TimelineBranch: React.FC<TimelineBranchProps> = ({ imageSrc, imageAlt, tit
         <div className={`absolute ${reverse ? 'left-1/2' : 'right-1/2'} top-1/2 w-full h-0.5 bg-wedding-gold opacity-50`}></div>
         <div className="w-4 h-4 bg-wedding-bg border-2 border-wedding-gold rounded-full z-10"></div>
       </div>
-      <div className={`w-full md:w-5/12 ${reverse ? 'md:pr-8' : 'md:pl-8'} flex justify-center md:justify-start`}>
+      <div className={`w-full md:w-5/12 ${reverse ? 'md:pr-8' : 'md:pl-8'} flex justify-center ${reverse ? 'md:justify-end' : 'md:justify-start'}`}>
         <div className="w-48 h-48 md:w-56 md:h-56 rounded-full border-4 border-white shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-500 relative z-10">
           <img alt={imageAlt} className="w-full h-full object-cover" src={imageSrc} />
         </div>
