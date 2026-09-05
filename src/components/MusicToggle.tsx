@@ -59,7 +59,12 @@ const MusicToggle: React.FC = () => {
     audio.addEventListener('play', onPlay)
     audio.addEventListener('pause', onPause)
 
-// Démarrage automatique dès la fin du chargement complet de la page.
+// Démarrage automatique dès que l'audio est jouable, puis au chargement complet.
+    const onAudioReady = () => {
+      void attemptPlay()
+    }
+    audio.addEventListener('canplaythrough', onAudioReady, { once: true })
+
     const onPageLoaded = () => {
       void attemptPlay()
     }
@@ -68,6 +73,9 @@ const MusicToggle: React.FC = () => {
     } else {
       window.addEventListener('load', onPageLoaded, { once: true })
     }
+
+    void attemptPlay()
+    audio.load()
 
     // Repli : première intention de scroll ou interaction de l'utilisateur.
     // Sur mobile, touchstart/touchend comptent comme une interaction valide.
@@ -94,6 +102,7 @@ const MusicToggle: React.FC = () => {
 
     return () => {
       window.removeEventListener('load', onPageLoaded)
+      audio.removeEventListener('canplaythrough', onAudioReady)
       startEvents.forEach(event => window.removeEventListener(event, handleStart))
       audio.removeEventListener('play', onPlay)
       audio.removeEventListener('pause', onPause)

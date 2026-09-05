@@ -8,6 +8,7 @@ import Lieu from '../components/Lieu'
 import GalerieArbreDeVie from '../components/GalerieArbreDeVie'
 import RSVP from '../components/RSVP'
 import Footer from '../components/Footer'
+import FlyingBags from '../components/FlyingBags'
 
 const Home: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const Home: React.FC = () => {
       <GalerieArbreDeVie />
       <RSVP />
       <Footer />
+      <FlyingBags />
     </main>
   )
 }

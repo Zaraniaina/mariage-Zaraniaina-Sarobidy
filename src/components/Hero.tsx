@@ -49,7 +49,18 @@ const Hero: React.FC = () => {
       </div>
 
       <ScrollReveal direction="fade" effect="blur" delay={300}>
-        <div className="relative z-10 text-center text-white px-4">
+        <div id="hero-title" className="relative z-10 text-center text-white px-4">
+          <img
+            id="hero-bags"
+            alt=""
+            aria-hidden="true"
+            src={basePath('/images/bags.png')}
+            className="w-36 h-36 md:w-44 md:h-44 rounded-full border-4 border-white object-cover shadow-2xl mx-auto mb-6 md:mb-8"
+            style={{
+              boxShadow: '0 0 45px 12px rgba(197, 160, 89, 0.35)',
+              filter: 'brightness(1.06) saturate(1.1)',
+            }}
+          />
           <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl mb-4 text-wedding-gold drop-shadow-lg">
             Zaraniaina & Sarobidy
           </h1>

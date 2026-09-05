@@ -1,6 +1,5 @@
 import React from 'react'
 import ScrollReveal from '../components/ScrollReveal'
-import { basePath } from '../utils/basePath'
 
 const LeGrandJour: React.FC = () => {
   return (
@@ -23,13 +22,7 @@ const LeGrandJour: React.FC = () => {
               </div>
               <p className="uppercase tracking-widest text-sm font-medium bg-wedding-bg/80 md:bg-transparent inline-block px-2">17 Octobre 2026</p>
             </div>
-            <div className="flex-none relative z-10 flex justify-center items-center w-28 h-28 md:w-36 md:h-36 bg-white rounded-full p-1 shadow-md border border-wedding-gold/50">
-              <img
-                alt="Alliances"
-                className="w-full h-full object-cover rounded-full"
-                  src={basePath('/images/bags.png')}
-              />
-            </div>
+                        <div id="alliances-bag" className="flex-none relative z-10 flex justify-center items-center w-28 h-28 md:w-36 md:h-36 bg-white rounded-full p-1 shadow-md border border-wedding-gold/50"></div>
             <div className="flex-1 relative z-10 md:bg-transparent px-4 py-2">
               <div className="text-wedding-gold mb-3 flex justify-center">
                 <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -37,7 +37,7 @@ const RSVP: React.FC = () => {
           ))}
         </div>
         <ScrollReveal direction="up" delay={700}>
-          <p className="text-xs text-gray-500 uppercase tracking-widest mt-6 md:mt-8">MERCI DE RÉPONDRE AVANT LE 15 SEPTEMBRE 2026</p>
+          <p className="text-xs text-gray-500 uppercase tracking-widest mt-6 md:mt-8">MERCI DE RÉPONDRE UNE OU DEUX SEMAINE AVANT LE 17 OCTOBRE 2026</p>
         </ScrollReveal>
       </div>
     </section>
