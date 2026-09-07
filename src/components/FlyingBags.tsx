@@ -1,164 +1,154 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { basePath } from '../utils/basePath'
 
-const ARC_HEIGHT = 90
-const SCALE_START = 1.15
-const ROTATE_START = -6
 const FALLBACK_SIZE = 180
-const HALO_MAX = 0.35
-const FLIGHT_MS = 1400
-const TRIGGER_RATIO = 0.5
 const SPARK_COUNT = 4
+const MOTION_SMOOTHING_MS = 280
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+const quadraticBezier = (start: number, control: number, end: number, t: number) =>
+  (1 - t) * (1 - t) * start + 2 * (1 - t) * t * control + t * t * end
 
-const easeInOutCubic = (t: number): number =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-
-// Vérifie qu'un élément et tous ses ancêtres sont effectivement visibles
-// (les ancêtres en opacité 0 rendent l'élément invisible, ex: ScrollReveal).
-const isEffectivelyVisible = (el: HTMLElement): boolean => {
-  let node: HTMLElement | null = el
-  while (node) {
-    const style = window.getComputedStyle(node)
-    if (style.display === 'none' || style.visibility === 'hidden') return false
-    const opacity = Number.parseFloat(style.opacity || '1')
-    if (opacity < 0.05) return false
-    node = node.parentElement
-  }
-  return true
+type Position = {
+  left: number
+  top: number
+  size: number
 }
-
-type Phase = 'idle' | 'flying' | 'done'
 
 const FlyingBags: React.FC = () => {
   const imgRef = useRef<HTMLImageElement | null>(null)
   const sparkRefs = useRef<(HTMLSpanElement | null)[]>([])
-  const reducedRef = useRef(false)
-  const phaseRef = useRef<Phase>('idle')
+  const hasArrivedRef = useRef(false)
+  const displayedProgressRef = useRef(0)
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
-    reducedRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  }, [])
-
-  const getStartRect = useCallback(() => {
-    const el = document.getElementById('hero-bags')
-    if (!el) return { left: window.innerWidth / 2, top: window.innerHeight * 0.3, size: FALLBACK_SIZE }
-    const r = el.getBoundingClientRect()
-    return { left: r.left + r.width / 2, top: r.top + r.height / 2, size: r.width }
-  }, [])
-
-  const getEndRect = useCallback(() => {
-    const target = document.getElementById('alliances-bag')
-    if (!target) return null
-    const r = target.getBoundingClientRect()
-    return { left: r.left + r.width / 2, top: r.top + r.height / 2, size: r.width }
-  }, [])
-
-  // Ratio de la position du cercle d'arrivée dans le viewport (top / vh).
-  const getTargetTopRatio = useCallback(() => {
-    const target = document.getElementById('alliances-bag')
-    if (!target) return 2
-    return target.getBoundingClientRect().top / window.innerHeight
-  }, [])
-
-  useEffect(() => {
     if (!isLoaded) return
+
     const img = imgRef.current
     if (!img) return
 
-    if (reducedRef.current) {
-      img.style.opacity = '0'
-      return
-    }
-
     let rafId = 0
-    let flightStart = 0
+    let lastFrame = performance.now()
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-    const setSparks = (value: string) => {
+    const setSparksOpacity = (value: string) => {
       sparkRefs.current.forEach(spark => {
         if (spark) spark.style.opacity = value
       })
     }
 
+    const getPosition = (id: string): Position | null => {
+      const element = document.getElementById(id)
+      if (!element) return null
+
+      const rect = element.getBoundingClientRect()
+      return {
+        left: rect.left + rect.width / 2,
+        top: rect.top + rect.height / 2 + window.scrollY,
+        size: rect.width || FALLBACK_SIZE,
+      }
+    }
+
     const settle = () => {
       const heroImg = document.getElementById('hero-bags') as HTMLImageElement | null
       const target = document.getElementById('alliances-bag') as HTMLElement | null
+
       if (target) {
+        target.replaceChildren()
         const settled = document.createElement('img')
         settled.src = img.src
         settled.alt = 'Alliances'
         settled.className = 'w-full h-full object-cover rounded-full'
         target.appendChild(settled)
       }
+
       if (heroImg) heroImg.style.display = 'none'
       img.style.opacity = '0'
-      setSparks('0')
+      setSparksOpacity('0')
     }
 
-    const loop = (now: number) => {
-      const ratio = getTargetTopRatio()
-      const phase = phaseRef.current
+    const update = (now: number) => {
+      if (hasArrivedRef.current) return
+
       const heroImg = document.getElementById('hero-bags') as HTMLImageElement | null
-      const target = document.getElementById('alliances-bag') as HTMLElement | null
+      const start = getPosition('hero-bags')
+      const end = getPosition('alliances-bag')
 
-      if (phase === 'idle') {
+      if (!start || !end) {
+        rafId = requestAnimationFrame(update)
+        return
+      }
+
+      const startScroll = Math.max(0, start.top - window.innerHeight / 2)
+      const endScroll = Math.max(startScroll + 1, end.top - window.innerHeight / 2)
+      const rawProgress = (window.scrollY - startScroll) / (endScroll - startScroll)
+      const targetProgress = Math.min(1, Math.max(0, rawProgress))
+
+      if (prefersReducedMotion) {
         img.style.opacity = '0'
-        setSparks('0')
-        if (ratio <= TRIGGER_RATIO && target && isEffectivelyVisible(target)) {
-          phaseRef.current = 'flying'
-          flightStart = now
-        }
-        rafId = requestAnimationFrame(loop)
-        return
-      }
-
-      if (phase === 'flying') {
-        const raw = Math.min(1, (now - flightStart) / FLIGHT_MS)
-        const t = easeInOutCubic(raw)
-        const start = getStartRect()
-        const end = getEndRect()
-        if (!end) {
-          phaseRef.current = 'done'
+        setSparksOpacity('0')
+        if (targetProgress === 1) {
+          hasArrivedRef.current = true
           settle()
           return
         }
-        const x = lerp(start.left, end.left, t)
-        const y = lerp(start.top, end.top, t) - ARC_HEIGHT * Math.sin(Math.PI * t)
-        const size = lerp(start.size || FALLBACK_SIZE, end.size, t)
-        const scale = lerp(SCALE_START, 1, t)
-        const rotate = lerp(ROTATE_START, 0, t)
-        const halo = HALO_MAX * (1 - t)
-        img.style.width = `${size}px`
-        img.style.height = `${size}px`
-        img.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${scale}) rotate(${rotate}deg)`
-        img.style.filter = 'brightness(1.08) saturate(1.15)'
-        img.style.boxShadow = `0 0 ${halo * 90}px ${halo * 25}px rgba(197, 160, 89, ${halo})`
-        img.style.opacity = '1'
-        if (heroImg) heroImg.style.opacity = String(Math.max(0, 1 - raw * 5))
-        sparkRefs.current.forEach((spark, i) => {
-          if (!spark) return
-          const angle = (i / SPARK_COUNT) * Math.PI * 2 + t * 3 + now / 800
-          const radius = 60 * (1 - t * 0.5)
-          spark.style.transform = `translate3d(${x + Math.cos(angle) * radius}px, ${y + Math.sin(angle) * radius}px, 0) translate(-50%, -50%) scale(${1 - t})`
-          spark.style.opacity = String(halo * (0.4 + 0.6 * Math.abs(Math.sin(now / 220 + i))))
-        })
-        if (raw >= 1) {
-          phaseRef.current = 'done'
-          settle()
-          return
-        }
-        rafId = requestAnimationFrame(loop)
+        rafId = requestAnimationFrame(update)
         return
       }
 
-      // phase 'done' : terminal, la boucle ne se relance pas.
+      const elapsed = Math.min(64, now - lastFrame)
+      lastFrame = now
+      const smoothing = 1 - Math.exp(-elapsed / MOTION_SMOOTHING_MS)
+      const difference = targetProgress - displayedProgressRef.current
+      displayedProgressRef.current += difference * smoothing
+      if (Math.abs(difference) < 0.001) displayedProgressRef.current = targetProgress
+      const progress = displayedProgressRef.current
+
+      if (progress === 0) {
+        img.style.opacity = '0'
+        if (heroImg) heroImg.style.removeProperty('opacity')
+        setSparksOpacity('0')
+        rafId = requestAnimationFrame(update)
+        return
+      }
+
+      const sideLane = Math.max(window.innerWidth * 1.2, start.left, end.left)
+      const x = quadraticBezier(start.left, sideLane, end.left, progress)
+      const documentY = lerp(start.top, end.top, progress)
+      const y = documentY - window.scrollY - 36 * Math.sin(Math.PI * progress)
+      const size = lerp(start.size, end.size, progress) * (1 - 0.35 * Math.sin(Math.PI * progress))
+      const halo = 0.28 * (1 - progress)
+
+      img.style.width = `${size}px`
+      img.style.height = `${size}px`
+      img.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%) scale(${lerp(1.08, 1, progress)})`
+      img.style.filter = 'brightness(1.08) saturate(1.15)'
+      img.style.boxShadow = `0 0 ${halo * 90}px ${halo * 25}px rgba(197, 160, 89, ${halo})`
+      img.style.opacity = String(1 - 0.32 * Math.sin(Math.PI * progress))
+      if (heroImg) heroImg.style.opacity = '0'
+
+      sparkRefs.current.forEach((spark, index) => {
+        if (!spark) return
+
+        const angle = (index / SPARK_COUNT) * Math.PI * 2 + progress * 4
+        const radius = 40 * (1 - progress * 0.5)
+        spark.style.transform = `translate3d(${x + Math.cos(angle) * radius}px, ${y + Math.sin(angle) * radius}px, 0) translate(-50%, -50%)`
+        spark.style.opacity = String(halo)
+      })
+
+      if (targetProgress === 1 && progress === 1) {
+        hasArrivedRef.current = true
+        settle()
+        return
+      }
+
+      rafId = requestAnimationFrame(update)
     }
 
-    rafId = requestAnimationFrame(loop)
+    rafId = requestAnimationFrame(update)
     return () => cancelAnimationFrame(rafId)
-  }, [isLoaded, getStartRect, getEndRect, getTargetTopRatio])
+  }, [isLoaded])
 
   return (
     <div aria-hidden="true" className="fixed inset-0 z-20 pointer-events-none">
@@ -171,10 +161,10 @@ const FlyingBags: React.FC = () => {
         style={{ opacity: 0 }}
       />
       {isLoaded &&
-        Array.from({ length: SPARK_COUNT }).map((_, i) => (
+        Array.from({ length: SPARK_COUNT }).map((_, index) => (
           <span
-            key={i}
-            ref={el => { sparkRefs.current[i] = el }}
+            key={index}
+            ref={element => { sparkRefs.current[index] = element }}
             className="absolute top-0 left-0 block w-2 h-2 rounded-full bg-wedding-gold will-change-transform"
             style={{ opacity: 0 }}
           />
