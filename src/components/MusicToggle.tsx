@@ -1,169 +1,109 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { basePath } from '../utils/basePath'
+import React, { useEffect, useRef, useState } from 'react'
+import music from '../audio/musicEngine'
+import type { MusicState } from '../audio/musicEngine'
 
-const TARGET_VOLUME = 0.35
-const FADE_STEP = 0.01
-const FADE_INTERVAL_MS = 50
-
-const audioUrl = basePath('/audio/Ed-Sheeran-Perfect.mp3')
+const BAR_COUNT = 4
 
 const MusicToggle: React.FC = () => {
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const fadeIntervalRef = useRef<number | null>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isBlocked, setIsBlocked] = useState(false)
-
-  const stopFade = useCallback(() => {
-    if (fadeIntervalRef.current !== null) {
-      window.clearInterval(fadeIntervalRef.current)
-      fadeIntervalRef.current = null
-    }
-  }, [])
-
-  const fadeIn = useCallback(() => {
-    const audio = audioRef.current
-    if (!audio) return
-    stopFade()
-    fadeIntervalRef.current = window.setInterval(() => {
-      if (audio.volume < TARGET_VOLUME) {
-        audio.volume = Math.min(TARGET_VOLUME, audio.volume + FADE_STEP)
-      } else {
-        stopFade()
-      }
-    }, FADE_INTERVAL_MS)
-  }, [stopFade])
-
-  const attemptPlay = useCallback(async () => {
-    const audio = audioRef.current
-    if (!audio) return false
-    try {
-      await audio.play()
-      setIsBlocked(false)
-      fadeIn()
-      return true
-    } catch {
-      setIsBlocked(true)
-      return false
-    }
-  }, [fadeIn])
+  const [state, setState] = useState<MusicState>({ isPlaying: false, isBlocked: false })
+  const barRefs = useRef<Array<HTMLSpanElement | null>>([])
 
   useEffect(() => {
-    const audio = new Audio(audioUrl)
-    audio.loop = true
-    audio.preload = 'auto'
-    audio.volume = 0
-    audioRef.current = audio
+    music.init()
+    return music.subscribe(setState)
+  }, [])
 
-    const onPlay = () => setIsPlaying(true)
-    const onPause = () => setIsPlaying(false)
-    audio.addEventListener('play', onPlay)
-    audio.addEventListener('pause', onPause)
+  // Equaliseur pilote par le signal reel, avec repli sur l'animation CSS
+  // tant que le contexte audio n'est pas autorise.
+  useEffect(() => {
+    if (!state.isPlaying) return
+    let rafId = 0
+    let live = false
 
-// Démarrage automatique dès que l'audio est jouable, puis au chargement complet.
-    let isPageLoaded = document.readyState === 'complete'
+    const tick = () => {
+      rafId = requestAnimationFrame(tick)
+      const levels = music.getLevels()
+      const bars = barRefs.current
 
-    const onAudioReady = () => {
-      if (isPageLoaded) void attemptPlay()
-    }
-    audio.addEventListener('canplay', onAudioReady, { once: true })
+      if (!levels.active) {
+        if (!live) return
+        live = false
+        bars.forEach(bar => {
+          if (!bar) return
+          bar.style.animation = ''
+          bar.style.transform = ''
+        })
+        return
+      }
 
-    const onPageLoaded = () => {
-      isPageLoaded = true
-      void attemptPlay()
-    }
-    audio.load()
-    if (document.readyState === 'complete') {
-      onPageLoaded()
-    } else {
-      window.addEventListener('load', onPageLoaded, { once: true })
-    }
+      if (!live) {
+        live = true
+        bars.forEach(bar => {
+          if (bar) bar.style.animation = 'none'
+        })
+      }
 
-
-    // Repli : première intention de scroll ou interaction de l'utilisateur.
-    // Sur mobile, touchstart/touchend comptent comme une interaction valide.
-    // Sur desktop, wheel ne compte pas pour l'autoplay : le repli pointerdown/keydown (clic) prend le relais.
-    const startEvents: (keyof WindowEventMap)[] = [
-      'touchstart',
-      'scroll',
-      'wheel',
-      'touchmove',
-      'touchend',
-      'pointerdown',
-      'keydown',
-    ]
-
-    const handleStart = () => {
-      void attemptPlay().then(success => {
-        if (success) {
-          startEvents.forEach(event => window.removeEventListener(event, handleStart))
-        }
+      const values = levels.bands
+      bars.forEach((bar, index) => {
+        if (!bar) return
+        const raw = Math.min(1, Math.max(0, values[index] ?? 0))
+        const value = 0.25 + 0.75 * Math.pow(raw, 1.6)
+        bar.style.transform = `scaleY(${value.toFixed(3)})`
       })
     }
 
-    startEvents.forEach(event => window.addEventListener(event, handleStart, { passive: true }))
-
-    return () => {
-      window.removeEventListener('load', onPageLoaded)
-      audio.removeEventListener('canplay', onAudioReady)
-      startEvents.forEach(event => window.removeEventListener(event, handleStart))
-      audio.removeEventListener('play', onPlay)
-      audio.removeEventListener('pause', onPause)
-      stopFade()
-      audio.pause()
-      audio.removeAttribute('src')
-      audio.load()
-      audioRef.current = null
-    }
-  }, [attemptPlay, stopFade])
-
-  const handleToggle = () => {
-    const audio = audioRef.current
-    if (!audio) return
-    if (audio.paused) {
-      void attemptPlay()
-    } else {
-      stopFade()
-      audio.pause()
-    }
-  }
+    rafId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafId)
+  }, [state.isPlaying])
 
   return (
-    <button
-      type="button"
-      onClick={handleToggle}
-      aria-label={isPlaying ? 'Couper la musique' : 'Activer la musique'}
-      title={isPlaying ? 'Couper la musique' : 'Activer la musique'}
-      className={`fixed bottom-5 right-5 z-50 w-12 h-12 rounded-full border border-wedding-gold/60 bg-white/80 backdrop-blur-md shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
-        isBlocked && !isPlaying ? 'animate-pulse-gold' : ''
-      }`}
-    >
-      {isPlaying ? (
-        <span className="flex items-center justify-center gap-[3px] h-4" aria-hidden="true">
-          {[0, 1, 2, 3].map(index => (
-            <span
-              key={index}
-              className="eq-bar block w-[3px] h-full bg-wedding-gold rounded-full"
-              style={{ animationDelay: `${index * 0.18}s` }}
-            />
-          ))}
-        </span>
-      ) : (
-        <svg
-          className="w-5 h-5 text-wedding-gold"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1.5}
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+      {state.isBlocked && !state.isPlaying && (
+        <p className="music-hint pointer-events-none max-w-[210px] rounded border border-wedding-gold/40 bg-white/90 px-3 py-2 text-right text-[10px] uppercase tracking-widest leading-relaxed text-wedding-dark/80 shadow-md backdrop-blur-md md:text-xs">
+          Touchez pour lancer la musique
+        </p>
       )}
-    </button>
+      <button
+        type="button"
+        data-music-toggle
+        onClick={music.toggle}
+        aria-label={state.isPlaying ? 'Couper la musique' : 'Activer la musique'}
+        title={state.isPlaying ? 'Couper la musique' : 'Activer la musique'}
+        className={`music-toggle w-12 h-12 rounded-full border border-wedding-gold/60 bg-white/80 backdrop-blur-md flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wedding-gold ${
+          state.isBlocked && !state.isPlaying ? 'animate-pulse-gold' : ''
+        }`}
+      >
+        {state.isPlaying ? (
+          <span className="flex items-center justify-center gap-[3px] h-4" aria-hidden="true">
+            {Array.from({ length: BAR_COUNT }).map((_, index) => (
+              <span
+                key={index}
+                ref={element => {
+                  barRefs.current[index] = element
+                }}
+                className="eq-bar block w-[3px] h-full bg-wedding-gold rounded-full"
+                style={{ animationDelay: `${index * 0.18}s` }}
+              />
+            ))}
+          </span>
+        ) : (
+          <svg
+            className="w-5 h-5 text-wedding-gold"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zm12-2a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        )}
+      </button>
+    </div>
   )
 }
 
