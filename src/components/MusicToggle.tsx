@@ -5,7 +5,7 @@ const TARGET_VOLUME = 0.35
 const FADE_STEP = 0.01
 const FADE_INTERVAL_MS = 50
 
-const audioUrl = basePath('/audio/Ed-Sheeran-Perfect.mp3')
+const audioUrl = basePath('/audio/Amir-Longtemps.mp3')
 
 const MusicToggle: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
