@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Preloader from './components/Preloader'
 import MusicToggle from './components/MusicToggle'
+import MusicAmbiance from './components/MusicAmbiance'
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
         </Routes>
         <MusicToggle />
+        <MusicAmbiance />
       </div>
     </Router>
   )

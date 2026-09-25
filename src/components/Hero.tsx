@@ -46,6 +46,7 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-black/40 to-transparent pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-full h-48 bg-gradient-to-t from-wedding-bg to-transparent pointer-events-none"></div>
+        <div className="music-hero-glow absolute inset-0 pointer-events-none" aria-hidden="true"></div>
       </div>
 
       <ScrollReveal direction="fade" effect="blur" delay={300}>

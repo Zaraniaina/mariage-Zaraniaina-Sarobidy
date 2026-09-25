@@ -41,7 +41,7 @@ const Programme: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 21h16M5 21V9m14 12V9M9 21V9m6 12V9M3 9l9-6 9 6H3z" />
                 </svg>
               }
-              title="à 9 heure 30"
+              title=" 9 heure 30"
               subtitle="Mariage Civil"
               description="Commune Urbain de Toamasina"
             />
@@ -54,7 +54,7 @@ const Programme: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v4m0 0H9m3 0h3m-3 4l-7 6v6h14v-6l-7-6zm0 0v12M9 21v-4a3 3 0 016 0v4" />
                 </svg>
               }
-              title="à 11 heure 00"
+              title=" 11 heure 00"
               subtitle="Mariage à l'Église"
               description="FJKM BETELA Tanambao V"
             />
@@ -80,7 +80,7 @@ const Programme: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3 2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3 2 3 .895 3 2zM9 10l12-3" />
                 </svg>
               }
-              title="à 14 heure 30"
+              title=" 14 heure 30"
               subtitle="Bal"
               description="Tsik'Hotel Tanambao I"
             />
